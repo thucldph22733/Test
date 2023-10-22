@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ImgResponseDto {
+public class ImageResponseDto {
 
     private Long id;
 

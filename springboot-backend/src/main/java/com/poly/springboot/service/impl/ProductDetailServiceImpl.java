@@ -2,7 +2,6 @@ package com.poly.springboot.service.impl;
 
 import com.poly.springboot.dto.requestDto.ProductDetailRequestDto;
 import com.poly.springboot.dto.responseDto.ProductDetailResponseDto;
-import com.poly.springboot.entity.Product;
 import com.poly.springboot.entity.ProductDetail;
 import com.poly.springboot.repository.*;
 import com.poly.springboot.service.ProductDetailService;
