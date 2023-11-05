@@ -18,4 +18,6 @@ public interface ProductService {
     Boolean updateProduct(ProductRequestDto productRequestDto,Long id);
 
     Product findProductById(Long id);
+
+    Boolean toggleProductStatus(Long id);
 }

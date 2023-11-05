@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function AddProduct() {
+
+
+  const [catagory, setCategory] = useState([]);
+
+    useEffect(() => {
+        loadCategory();
+    }, []);
+
+    const loadCategory = async () => {
+        const results = await axios.get("http://localhost:8080/api/categories/getAll")
+        setCategory(results.data);
+    }
+
+    const { id } = useParams();
+
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({
@@ -84,17 +101,12 @@ export default function AddProduct() {
               <input type="file" className="form-control" name="avatar" onChange={onFileChange} />
             </div>
             <div className="mb-3">
-              <label htmlFor="categoryName" className="form-label">
-                Category Name
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Enter category name"
-                name="categoryName"
-                value={product.categoryName}
-                onChange={onInputChange}
-              />
+              <Form.Group>
+                <Form.Label>Category</Form.Label>
+                <Form.Select name="status" value={catagory.categoryName} onChange={(e) => onInputChange(e)}>
+                  <option value={catagory.id}>{catagory.categoryName}</option>
+                </Form.Select>
+              </Form.Group>
             </div>
             <div className="mb-3">
               <label htmlFor="clubName" className="form-label">

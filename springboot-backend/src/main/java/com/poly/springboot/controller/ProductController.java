@@ -86,4 +86,18 @@ public class ProductController {
         }
     }
 
+    @PutMapping("toggle-status/{id}")
+    public ResponseEntity<ResponseDto> toggleProductStatus(@PathVariable Long id) {
+        Boolean isToggled = productService.toggleProductStatus(id);
+        if (isToggled) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto(NotificationConstants.STATUS_200, NotificationConstants.MESSAGE_200));
+        } else {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ResponseDto(NotificationConstants.STATUS_500, NotificationConstants.MESSAGE_500));
+        }
+    }
+
 }

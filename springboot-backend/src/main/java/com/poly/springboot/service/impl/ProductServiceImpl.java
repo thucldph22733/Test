@@ -2,6 +2,7 @@ package com.poly.springboot.service.impl;
 
 import com.poly.springboot.dto.requestDto.ProductRequestDto;
 import com.poly.springboot.dto.responseDto.ProductResponseDto;
+import com.poly.springboot.entity.Customer;
 import com.poly.springboot.entity.Product;
 import com.poly.springboot.exception.AlreadyExistsException;
 import com.poly.springboot.exception.ResourceNotFoundException;
@@ -115,5 +116,21 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(()-> new ResourceNotFoundException("sản phẩm",String.valueOf(id)));
 
         return product;
+    }
+
+    @Override
+    public Boolean toggleProductStatus(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("sản phẩm", String.valueOf(id)));
+
+        // Kiểm tra và chuyển đổi trạng thái
+        if (product.getStatus() == 0) {
+            product.setStatus(1);
+        } else {
+            product.setStatus(0);
+        }
+
+        productRepository.save(product);
+        return true;
     }
 }

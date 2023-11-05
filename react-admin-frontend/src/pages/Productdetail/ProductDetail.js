@@ -10,9 +10,7 @@ import { DeleteOutlined } from '@ant-design/icons';
 import { FaEdit, FaEye } from 'react-icons/fa';
 import imagess from 'D:/DoAnTotNghiep/S2TN_SPORT/react-admin-frontend/src/assets/images/importImages';
 import { Form } from 'react-bootstrap';
-
-function Product() {
- 
+function ProductDetail() {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const [productData, setProductData] = useState([]);
@@ -23,71 +21,18 @@ function Product() {
     const navigate = useNavigate();
     const [editProductId, setEditProductId] = useState(null);
 
-    const [categories, setCategory] = useState([]);
-
     useEffect(() => {
-        loadCategory();
+        loadProductDetail();
     }, []);
 
-    const loadCategory = async () => {
-        const results = await axios.get("http://localhost:8080/api/categories/getAll")
-        setCategory(results.data);
-    }
-
-
-    
-    const [clubs, setClub] = useState([]);
-
-    useEffect(() => {
-        loadClub();
-    }, []);
-
-    const loadClub = async () => {
-        const results = await axios.get("http://localhost:8080/api/clubs/getAll")
-        setClub(results.data);
-    }
-
-
-
-    
-    const [brands, setBrand] = useState([]);
-
-    useEffect(() => {
-        loadBrand();
-    }, []);
-
-    const loadBrand = async () => {
-        const results = await axios.get("http://localhost:8080/api/brands/getAll")
-        setBrand(results.data);
-    }
-
-
-
-    
-    const [suppliers, setSupplier] = useState([]);
-
-    useEffect(() => {
-        loadSupplier();
-    }, []);
-
-    const loadSupplier = async () => {
-        const results = await axios.get("http://localhost:8080/api/suppliers/getAll")
-        setSupplier(results.data);
-    }
-
-
-    useEffect(() => {
-        loadProduct();
-    }, []);
-
-    const loadProduct = async () => {
-        const result = await axios.get('http://localhost:8080/api/product/getAll');
+    const loadProductDetail = async () => {
+        const result = await axios.get('http://localhost:8080/api/productDetails/getAll');
         setProductData(result.data);
     };
 
     const deleteProduct = async (id) => {
-        await axios.delete(`http://localhost:8080/api/product/delete/${id}`);
-        loadProduct();
+        await axios.delete(`http://localhost:8080/api/productDetails/delete/${id}`);
+        loadProductDetail();
     };
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
@@ -195,53 +140,59 @@ function Product() {
             ),
     });
     const columns = [
-        {
-            title: 'Ảnh',
-            dataIndex: 'productAvatar',
-            key: 'productAvatar',
-            width: '10%',
-            render: (record) => {
-                return <Image width={70} src={imagess[`./${record}`]} />;
-            },
-        },
+        // {
+        //     title: 'Ảnh',
+        //     dataIndex: 'productAvatar',
+        //     key: 'productAvatar',
+        //     width: '10%',
+        //     render: (record) => {
+        //         return <Image width={70} src={imagess[`./${record}`]} />;
+        //     },
+        // },
 
         {
             title: 'Tên sản phẩm',
             dataIndex: 'productName',
             key: 'productName',
-            width: '15%',
+            width: '10%',
             ...getColumnSearchProps('productName'),
             sorter: (a, b) => a.productName.length - b.productName.length,
             sortDirections: ['descend', 'ascend'],
         },
         {
-            title: 'Loại sản phẩm',
-            dataIndex: 'categoryName',
-            key: 'categoryName',
+            title: 'Màu sắc',
+            dataIndex: 'colorName',
+            key: 'colorName',
             width: '10%',
         },
         {
-            title: 'Câu lạc bộ',
-            dataIndex: 'clubName',
-            key: 'clubName',
+            title: 'Chất liệu',
+            dataIndex: 'materialName',
+            key: 'materialName',
             width: '10%',
         },
         {
-            title: 'Thương hiệu',
-            dataIndex: 'brandName',
-            key: 'brandName',
+            title: 'Size',
+            dataIndex: 'sizeName',
+            key: 'sizeName',
             width: '10%',
         },
         {
-            title: 'Nhà cung cấp',
-            dataIndex: 'supplierName',
-            key: 'supplierName',
+            title: 'Số lượng',
+            dataIndex: 'quantity',
+            key: 'quantity',
             width: '10%',
         },
         {
-            title: 'Mô tả',
-            dataIndex: 'productDescribe',
-            key: 'productDescribe',
+            title: 'Giá',
+            dataIndex: 'price',
+            key: 'price',
+            width: '10%',
+        },
+        {
+            title: 'Giá khuyến mãi',
+            dataIndex: 'promotionPrice',
+            key: 'promotionPrice',
             width: '10%',
         },
         // {
@@ -256,11 +207,17 @@ function Product() {
         //     key: 'updateBy',
         //     width: '10%',
         // },
+        // {
+        //     title: 'Người tạo',
+        //     dataIndex: 'createBy',
+        //     key: 'createBy',
+        //     width: '10%',
+        // },
         {
             title: 'Trạng thái',
             dataIndex: 'status',
             key: 'status',
-            width: '15%',
+            width: '10%',
             render: (text) => (
                 <span
                     style={{
@@ -282,7 +239,7 @@ function Product() {
             title: <div style={{ textAlign: 'center' }}>Hành động</div>,
             dataIndex: '',
             key: 'x',
-            width: '30%',
+            width: '20%',
             render: (record) => (
                 <div style={{ textAlign: 'center' }}>
 
@@ -326,7 +283,7 @@ function Product() {
 
     const fetchData = () => {
         setLoading(true);
-        fetch(`http://localhost:8080/api/product/getAll?${qs.stringify(getRandomuserParams(tableParams))}`)
+        fetch(`http://localhost:8080/api/productDetails/getAll?${qs.stringify(getRandomuserParams(tableParams))}`)
             .then((res) => res.json())
             .then(({ results }) => {
                 setData(results);
@@ -369,52 +326,47 @@ function Product() {
 
     const [product, setProduct] = useState({
         productName: '',
-        avatar: null, // Thay mảng thành tệp ảnh đơn
-        categoryName: '',
-        clubName: '',
-        brandName: '',
-        supplierName: '',
-        productDescribe: '',
+        // avatar: null, // Thay mảng thành tệp ảnh đơn
+        colorName: '',
+        materialName: '',
+        sizeName: '',
+        quantity: '',
+        price: '',
+        promotionPrice:'',
         createBy: '',
         updateBy: '',
-        viewCount: '',
-        productSale: '',
-        productNew: '',
-        productHot: '',
         status: 1,
     });
 
-    const { productName, avatar, categoryName, clubName, brandName, supplierName, productDescribe, createBy, updateBy, viewCount, productSale, productNew, productHot, status } = product;
+    const { productName, colorName, materialName, sizeName, quantity,price, promotionPrice, createBy, updateBy, status } = product;
 
     const onInputChange = (e) => {
         setProduct({ ...product, [e.target.name]: e.target.value });
     };
 
-    const onFileChange = (e) => {
-        const file = e.target.files[0]; // Chỉ chấp nhận một tệp ảnh
-        setProduct({ ...product, avatar: file });
-    };
+    // const onFileChange = (e) => {
+    //     const file = e.target.files[0]; // Chỉ chấp nhận một tệp ảnh
+    //     setProduct({ ...product, avatar: file });
+    // };
 
     const onSubmitAdd = async (e) => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('productName', productName);
-        formData.append('avatar', avatar);
-        formData.append('categoryName', categoryName);
-        formData.append('clubName', clubName);
-        formData.append('brandName', brandName);
-        formData.append('supplierName', supplierName);
-        formData.append('productDescribe', productDescribe);
+        // formData.append('avatar', avatar);
+        formData.append('colorName', colorName);
+        formData.append('materialName', materialName);
+        formData.append('sizeName', sizeName);
+        formData.append('quantity', quantity);
+        formData.append('price',price);
+        formData.append('promotionPrice', promotionPrice);
         formData.append('createBy', createBy);
         formData.append('updateBy', updateBy);
-        formData.append('viewCount', viewCount);
-        formData.append('productSale', productSale);
-        formData.append('productNew', productNew);
-        formData.append('productHot', productHot);
         formData.append('status', status);
 
+
         try {
-            const response = await fetch('http://localhost:8080/api/product/create', {
+            const response = await fetch('http://localhost:8080/api/productDetails/create', {
                 method: 'POST',
                 body: formData,
             });
@@ -426,22 +378,19 @@ function Product() {
                 // Reset form state
                 setProduct({
                     productName: '',
-                    avatar: '', // Thay mảng thành tệp ảnh đơn
-                    categoryName: '',
-                    clubName: '',
-                    brandName: '',
-                    supplierName: '',
-                    productDescribe: '',
+                    // avatar: '', // Thay mảng thành tệp ảnh đơn
+                    colorName: '',
+                    materialName: '',
+                    sizeName: '',
+                    quantity: '',
+                    price: '',
+                    promotionPrice:'',
                     createBy: '',
                     updateBy: '',
-                    viewCount: '',
-                    productSale: '',
-                    productNew: '',
-                    productHot: '',
                     status: '',
                 });
                 // Reload product data
-                loadProduct(); // or loadproduct() if needed
+                loadProductDetail(); // or loadProductDetail() if needed
             } else {
                 console.error('Error:', response.status);
             }
@@ -461,18 +410,15 @@ function Product() {
         // Đặt dữ liệu khách hàng để chỉnh sửa
         setProduct({
             productName: record.productName,
-            avatar: record.avatar,
-            categoryName: record.categoryName,
-            clubName: record.clubName,
-            brandName: record.brandName,
-            supplierName: record.supplierName,
-            productDescribe: record.productDescribe,
+            // avatar: record.avatar,
+            colorName: record.colorName,
+            materialName: record.materialName,
+            sizeName: record.sizeName,
+            quantity: record.quantity,
+            price: record.price,
+            promotionPrice:record.promotionPrice,
             createBy: record.createBy,
             updateBy: record.updateBy,
-            productSale: record.productSale,
-            viewCount: record.viewCount,
-            productNew: record.productNew,
-            productHot: record.productHot,
             status: record.status,
         });
         setEditProductId(record.id); // Lưu ID của khách hàng vào một state khác (nếu bạn chưa có state này).
@@ -493,27 +439,24 @@ function Product() {
         const formData = new FormData();
 
         formData.append('productName', productName);
-        formData.append('avatar', avatar);
-        formData.append('categoryName', categoryName);
-        formData.append('clubName', clubName);
-        formData.append('brandName', brandName);
-        formData.append('supplierName', supplierName);
-        formData.append('productDescribe', productDescribe);
+        // formData.append('avatar', avatar);
+        formData.append('colorName', colorName);
+        formData.append('materialName', materialName);
+        formData.append('sizeName', sizeName);
+        formData.append('quantity', quantity);
+        formData.append('price',price);
+        formData.append('promotionPrice', promotionPrice);
         formData.append('createBy', createBy);
         formData.append('updateBy', updateBy);
-        formData.append('viewCount', viewCount);
-        formData.append('productSale', productSale);
-        formData.append('productNew', productNew);
-        formData.append('productHot', productHot);
         formData.append('status', status);
 
         // Thêm kiểm tra nếu ảnh thay đổi
-        if (avatar instanceof File) {
-            formData.append('avatar', avatar);
-        }
+        // if (avatar instanceof File) {
+        //     formData.append('avatar', avatar);
+        // }
 
         try {
-            const response = await fetch(`http://localhost:8080/api/product/update?id=${editProductId}`, {
+            const response = await fetch(`http://localhost:8080/api/productDetails/update?id=${editProductId}`, {
                 method: 'PUT',
                 body: formData,
             });
@@ -523,21 +466,18 @@ function Product() {
                 setIsModalOpen(false);
                 setProduct({
                     productName: '',
-                    avatar: '', // Thay mảng thành tệp ảnh đơn
-                    categoryName: '',
-                    clubName: '',
-                    brandName: '',
-                    supplierName: '',
-                    productDescribe: '',
+                    // avatar: '', // Thay mảng thành tệp ảnh đơn
+                    colorName: '',
+                    materialName: '',
+                    sizeName: '',
+                    quantity: '',
+                    price: '',
+                    promotionPrice:'',
                     createBy: '',
                     updateBy: '',
-                    viewCount: '',
-                    productSale: '',
-                    productNew: '',
-                    productHot: '',
                     status: '',
                 });
-                loadProduct(); // Hoặc loadCustomers() nếu cần
+                loadProductDetail(); // Hoặc loadCustomers() nếu cần
             } else {
                 console.error('Có lỗi xảy ra khi cập nhật.');
             }
@@ -548,11 +488,11 @@ function Product() {
 
     const toggleProductStatus = async (productId) => {
         try {
-            const response = await axios.put(`http://localhost:8080/api/product/toggle-status/${productId}`);
+            const response = await axios.put(`http://localhost:8080/api/productDetails/toggle-status/${productId}`);
             if (response.status === 200) {
                 // Cập nhật trạng thái thành công
                 // Đảm bảo bạn cập nhật lại danh sách khách hàng sau khi cập nhật trạng thái
-                loadProduct();
+                loadProductDetail();
             } else {
                 console.error('Có lỗi xảy ra khi cập nhật trạng thái.');
             }
@@ -593,110 +533,87 @@ function Product() {
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
-                        <div className="mb-3">
+                        {/* <div className="mb-3">
                             <label htmlFor="avatar" className="form-label">
                                 Ảnh
                             </label>
                             <input type="file" className="form-control" name="avatar" onChange={onFileChange} />
-                        </div>
-                        <div className="mb-3">
-                            {
-                                // categories.map((category) => {
-                                //     <Form.Group>
-                                //         <Form.Label>Category</Form.Label>
-                                //         <Form.Select name="status" value={category.categoryName} onChange={(e) => onInputChange(e)}>
-                                //             <option value={category}>{category.categoryName}</option>
-                                //         </Form.Select>
-                                //     </Form.Group>
-                                // })
-
-                            }
-
-                        </div>
-                        <div className="mb-3">
-                            <label className="form-label">
-                                Loại sản phẩm
-                            </label>
-                            <select name="categoryId" className="form-select"  onChange={(e) => onInputChange(e)}>
-                                {categories.map((pos, index) => (
-                                    <option key={index} value={pos.id}>{pos.categoryName}</option>
-                                ))
-                                }
-                            </select>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">
-                                Câu lạc bộ
-                            </label>
-                            <select name="clubId" className="form-select"  onChange={(e) => onInputChange(e)}>
-                                {clubs.map((pos, index) => (
-                                    <option key={index} value={pos.id}>{pos.clubName}</option>
-                                ))
-                                }
-                            </select>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">
-                                Thương hiệu
-                            </label>
-                            <select name="brandId" className="form-select"  onChange={(e) => onInputChange(e)}>
-                                {brands.map((pos, index) => (
-                                    <option key={index} value={pos.id}>{pos.brandName}</option>
-                                ))
-                                }
-                            </select>
-                        </div>
-
-                        <div className="mb-3">
-                            <label className="form-label">
-                                Nhà phân phối
-                            </label>
-                            <select name="supplierId" className="form-select"  onChange={(e) => onInputChange(e)}>
-                                {suppliers.map((pos, index) => (
-                                    <option key={index} value={pos.id}>{pos.supplierName}</option>
-                                ))
-                                }
-                            </select>
-                        </div>
-
-                        {/* <div className="mb-3">
-                            <label htmlFor="brandName" className="form-label">
-                                Thương hiệu
-                            </label>
-                            <input
-                                type={'text'}
-                                className="form-control"
-                                placeholder="Enter brand name?"
-                                name="brandName"
-                                value={brandName}
-                                onChange={(e) => onInputChange(e)}
-                            />
-                        </div>
-                        <div className="mb-3">
-                            <label htmlFor="supplierName" className="form-label">
-                                Nhà cung cấp
-                            </label>
-                            <input
-                                type={'text'}
-                                className="form-control"
-                                placeholder="Enter supplier name?"
-                                name="supplierName"
-                                value={supplierName}
-                                onChange={(e) => onInputChange(e)}
-                            />
                         </div> */}
                         <div className="mb-3">
-                            <label htmlFor="productDescribe" className="form-label">
-                                Mô tả
+                            <label htmlFor="colorName" className="form-label">
+                                Màu sắc
+                            </label>
+                            <input
+                                type={'text'}
+                                className="form-control"
+                                placeholder="Enter color name?"
+                                name="colorName"
+                                value={colorName}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="materialName" className="form-label">
+                                Chất liệu
+                            </label>
+                            <input
+                                type={'text'}
+                                className="form-control"
+                                placeholder="Enter material name?"
+                                name="materialName"
+                                value={materialName}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="sizeName" className="form-label">
+                                Size
+                            </label>
+                            <input
+                                type={'text'}
+                                className="form-control"
+                                placeholder="Enter size name?"
+                                name="sizeName"
+                                value={sizeName}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="quantity" className="form-label">
+                                Số lượng
                             </label>
                             <input
                                 type={'text'}
                                 className="form-control"
                                 placeholder="Enter Describe?"
-                                name="productDescribe"
-                                value={productDescribe}
+                                name="quantity"
+                                value={quantity}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="price" className="form-label">
+                                Giá
+                            </label>
+                            <input
+                                type={'text'}
+                                className="form-control"
+                                placeholder="Enter create name?"
+                                name="price"
+                                value={price}
+                                onChange={(e) => onInputChange(e)}
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="promotionPrice" className="form-label">
+                                Giá khuyến mãi
+                            </label>
+                            <input
+                                type={'text'}
+                                className="form-control"
+                                placeholder="Enter create name?"
+                                name="promotionPrice"
+                                value={promotionPrice}
                                 onChange={(e) => onInputChange(e)}
                             />
                         </div>
@@ -730,15 +647,15 @@ function Product() {
                             <Form.Group>
                                 <Form.Label>Trạng thái</Form.Label>
                                 <Form.Select name="status" value={status} onChange={(e) => onInputChange(e)}>
-                                    <option value="0">Đang hoạt động</option>
-                                    <option value="1">Không hoạt động</option>
+                                    <option value="0">Còn hàng</option>
+                                    <option value="1">Hết hàng</option>
                                 </Form.Select>
                             </Form.Group>
                         </div>
                     </form>
                 </Modal>
                 <div className="tieu-de" style={{ float: 'left', marginLeft: '10px' }}>
-                    <h4>Danh sách sản phẩm</h4>
+                    <h4>Danh sách chi tiết sản phẩm</h4>
                 </div>
                 <Link
                     className="btn btn-success mx-2"
@@ -763,9 +680,8 @@ function Product() {
                     onChange={handleTableChange}
                 />
             </div>
-        </>        
-        
+        </>
     );
 }
 
-export default Product;
+export default ProductDetail;

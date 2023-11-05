@@ -14,9 +14,8 @@ import EditAddress from './pages/Address/EditAddress';
 import Customer from './pages/Customer/Customer';
 import EditCustomer from './pages/Customer/EditCustomer';
 import AddCustomer from './pages/Customer/AddCustomer';
-import Size from './pages/Products/Sizes';
 import EditProduct from './pages/Products/EditProduct';
-import AddProduct from './pages/Products/AddProduct';
+import ProductDetail from './pages/Productdetail/ProductDetail';
 
 function App() {
     const router = createBrowserRouter([
@@ -37,12 +36,12 @@ function App() {
                     element: <Product />,
                 },
                 {
-                    path: path_name.addproduct,
-                    element: <AddProduct />,
+                    path: path_name.productdetail,
+                    element: <ProductDetail />,
                 },
                 {
                     path: path_name.order,
-                    element: <Order />,
+                    element: <Order/>,
                 },
                 {
                     path: path_name.address,
@@ -63,10 +62,6 @@ function App() {
                 {
                     path: path_name.addcustomer,
                     element: <AddCustomer />,
-                },
-                {
-                    path: path_name.size,
-                    element: <Size />,
                 },
                 {
                     path: path_name.editcustomer + '/:id',

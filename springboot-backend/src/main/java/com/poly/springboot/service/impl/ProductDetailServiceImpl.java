@@ -135,4 +135,20 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return true;
     }
 
+    @Override
+    public Boolean toggleProductStatus(Long id) {
+        ProductDetail product = productDetailRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("chi tiết sản phẩm", String.valueOf(id)));
+
+        // Kiểm tra và chuyển đổi trạng thái
+        if (product.getStatus() == 0) {
+            product.setStatus(1);
+        } else {
+            product.setStatus(0);
+        }
+
+        productDetailRepository.save(product);
+        return true;
+    }
+
 }

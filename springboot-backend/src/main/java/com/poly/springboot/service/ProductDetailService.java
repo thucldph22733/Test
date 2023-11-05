@@ -18,4 +18,6 @@ public interface ProductDetailService {
     Boolean createProductDetail(ProductDetailRequestDto productDetailRequestDto);
 
     Boolean updateProductDetail(ProductDetailRequestDto productDetailRequestDto,Long id);
+
+    Boolean toggleProductStatus(Long id);
 }

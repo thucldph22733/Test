@@ -23,7 +23,7 @@ public class ProductDetailRequestDto {
     @NotEmpty(message = "Số lượng không được để trống!")
     private Integer quantity;
 
-    @NotEmpty(message = "Tên giá không được để trống!")
+    @NotEmpty(message = "Giá không được để trống!")
     private Double price;
 
     private Double promotionPrice;

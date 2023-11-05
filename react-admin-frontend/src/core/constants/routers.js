@@ -10,6 +10,7 @@ const path_name = {
     customer: '/customer',
     addcustomer: '/addcustomer',
     editcustomer: '/editcustomer',
+    productdetail:'/productdetail',
     size: '/sizes',
 };
 
